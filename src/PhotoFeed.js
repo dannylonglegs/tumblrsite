@@ -14,13 +14,16 @@ class PhotoFeed extends Component {
     });
 
     this.state = {
-      photos: []
+      photos: [],
+      bottom: false
     }
-  
+    this.scrollHandler = this.scrollHandler.bind(this);
     // Get the first 20 photos when the component is created.
     this.fetchPhotos({limit: 20, offset: 0})
       .then(photos => this.setState({photos}))
       .catch(console.error);
+
+      
   }
 
   /**
@@ -49,12 +52,39 @@ class PhotoFeed extends Component {
   }
 
 
+  scrollHandler(){
+    const windowHeight = "innerHeight" in window ? window.innerHeight : document.documentElement.offsetHeight;
+    const body = document.body;
+    const html = document.documentElement;
+    const docHeight = Math.max(body.scrollHeight, body.offsetHeight, html.clientHeight,  html.scrollHeight, html.offsetHeight);
+    const windowBottom = windowHeight + window.pageYOffset;
+   
+    if (windowBottom >= docHeight) {
+      this.setState({
+        bottom: true
+      });
+    } else {
+      this.setState({
+        bottom: false
+      });
+    }
+  }
+
+  componentDidMount() {
+    window.addEventListener("scroll", this.scrollHandler);
+  }
+
+  componentWillUnmount() {
+    window.removeEventListener("scroll", this.scrollHandler);
+  }
+
+
   render() {
     const {photos} = this.state;
     return (
       <ul className='photo-feed'>
         {photos.map(photo => (
-          <li><img src={photo} width="500" /></li>
+          <li className="tumblr-photos-wrapper"><img className="tumblr-photos" src={photo} height="400"/></li>
         ))}
       </ul>
     );
