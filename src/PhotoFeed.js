@@ -21,7 +21,6 @@ class PhotoFeed extends Component {
     this.scrollHandler = this.scrollHandler.bind(this);
     this.alertMe = this.alertMe.bind(this);
     this.fetchPhotosOnScroll = this.fetchPhotosOnScroll.bind(this);
-    // Get the first 20 photos when the component is created.
     this.fetchPhotos({limit: 20, offset: 0})
       .then(photos => this.setState({photos}))
       .catch(console.error);
@@ -36,6 +35,7 @@ class PhotoFeed extends Component {
    * @returns {Promise}
    * @memberof PhotoFeed
    */
+  
   fetchPhotos(options = {}) {
     return new Promise((resolve, reject) => {
       const {blogId} = this.props;
@@ -44,9 +44,11 @@ class PhotoFeed extends Component {
         if (err) {
           return reject(err);
         } else {
+
           // Transform `posts` array into an array of photo URLs.
           const photos = posts.map(post => post.photos[0].original_size.url);
           return resolve(photos);
+
         }
       });
     });
