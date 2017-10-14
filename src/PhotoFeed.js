@@ -15,15 +15,16 @@ class PhotoFeed extends Component {
 
     this.state = {
       photos: [],
-      bottom: false
+      bottom: false,
+      offsetNum: 0
     }
     this.scrollHandler = this.scrollHandler.bind(this);
+    this.alertMe = this.alertMe.bind(this);
+    this.fetchPhotosOnScroll = this.fetchPhotosOnScroll.bind(this);
     // Get the first 20 photos when the component is created.
     this.fetchPhotos({limit: 20, offset: 0})
       .then(photos => this.setState({photos}))
       .catch(console.error);
-
-      
   }
 
   /**
@@ -51,6 +52,21 @@ class PhotoFeed extends Component {
     });
   }
 
+  alertMe(){
+      this.setState({
+        offsetNum: this.state.offsetNum + 20
+      })
+      this.fetchPhotosOnScroll();
+  }
+
+  fetchPhotosOnScroll(){
+    this.fetchPhotos({limit: 20, offset: this.state.offsetNum})
+    .then(photos => this.setState({
+            photos: this.state.photos.concat(photos)
+        })
+    )
+    .catch(console.error);
+  }
 
   scrollHandler(){
     const windowHeight = "innerHeight" in window ? window.innerHeight : document.documentElement.offsetHeight;
@@ -60,9 +76,11 @@ class PhotoFeed extends Component {
     const windowBottom = windowHeight + window.pageYOffset;
    
     if (windowBottom >= docHeight) {
+      this.alertMe();  
       this.setState({
         bottom: true
-      });
+      }
+    );
     } else {
       this.setState({
         bottom: false
