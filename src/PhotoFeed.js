@@ -75,10 +75,10 @@ class PhotoFeed extends Component {
     const body = document.body;
     const html = document.documentElement;
     const docHeight = Math.max(body.scrollHeight, body.offsetHeight, html.clientHeight,  html.scrollHeight, html.offsetHeight);
-    const windowBottom = windowHeight + window.pageYOffset;
-   
+    const windowBottom = Math.ceil(windowHeight + window.pageYOffset);
+
     if (windowBottom >= docHeight) {
-      this.alertMe();  
+      this.alertMe(); 
       this.setState({
         bottom: true
       }
@@ -104,7 +104,7 @@ class PhotoFeed extends Component {
     return (
       <ul className='photo-feed'>
         {photos.map(photo => (
-          <li className="tumblr-photos-wrapper"><img className="tumblr-photos" src={photo} height="400"/></li>
+          <li className="tumblr-photos-wrapper"><img className="tumblr-photos" src={photo}/></li>
         ))}
       </ul>
     );

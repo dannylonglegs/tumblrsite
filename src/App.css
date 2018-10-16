@@ -2,9 +2,25 @@
   text-align: center;
 }
 
-.tumblr-photos{
-  width: auto;
+header {
+  position: fixed;
+  width: 100%;
+  height: 10%;
+}
 
+.App-title {
+  float: left;
+  margin-left: 2em;
+}
+
+.info-link {
+  float: right;
+  margin-right: 2em;
+}
+
+.tumblr-photos{
+  width: 70%;
+  height: auto;
 }
 
 .tumblr-photos-wrapper {
